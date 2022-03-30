@@ -1,31 +1,59 @@
+import java.util.ArrayList;
 import java.util.HashSet;
-
+import java.util.List;
+import java.io.*;
+import java.lang.*;
+import java.util.*;
 public class Graph {
-    private HashSet<Node> nodes = new HashSet<>();
+    private Node[] nodes=null;
 
     public void addNode(Node node){
-        nodes.add(node);
+        if (nodes==null){
+            nodes= new Node[]{node};
+        }
+        else{
+            List<Node> tmpList=new ArrayList<Node>(Arrays.asList(nodes));
+            tmpList.add(node);
+            nodes=tmpList.toArray(nodes);
+        }
     }
-    public HashSet<Node> getNodes(){
+    public Node[] getNodes(){
         return nodes;
     }
-
-    /**
-     * This method prints the summary table for compute-all function
-     * @param source source node
-     */
-    public void printSummaryTable(Node source){
-        System.out.println("Source " + source.getName() + ":");
-        for (Node node: this.getNodes()){
-            if (!node.equals(source)){
-                System.out.print(node.getName() + ": Path: ");
-                for (Node nodeAlongPath: node.getShortestPath()){
-                    System.out.print(nodeAlongPath.getName() + ">");
-                }
-                System.out.print(node.getName() + " ");
-                System.out.print("Cost: " + node.getDistance() + "\n");
+    public Node sourceNode(String sourceName){
+        Node source = null;
+        for (Node value : nodes) {
+            if (value.getName().equals(sourceName)) {
+                source = value;
             }
         }
+        return source;
+    }
+    /**
+     * This method prints the summary table for compute-all function
+     */
+    public String printSummaryTable(String sourceName){
+        Node source = null;
+        String returnStr="";
+        for (Node value : nodes) {
+            if (value.getName().equals(sourceName)) {
+                source = value;
+            }
+        }
+        if (source!=null){
+            returnStr=returnStr+"Source " + sourceName + ": \n";
+            for (Node node: this.getNodes()){
+                if (!node.getName().equals(source.getName())){
+                    returnStr=returnStr+node.getName() + ": Path: ";
+                    for (Node nodeAlongPath: node.getShortestPath()){
+                        returnStr=returnStr+nodeAlongPath.getName() + ">";
+                    }
+                    returnStr=returnStr+node.getName() + " ";
+                    returnStr=returnStr+"Cost: " + node.getDistance() + "\n";
+                }
+            }
+        }
+        return returnStr;
     }
 
     /**
