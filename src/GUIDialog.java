@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class GUIDialog extends JDialog {
     private JPanel contentPane;
@@ -15,6 +16,7 @@ public class GUIDialog extends JDialog {
     private JTextField selectSourceTextField;
     private JTextArea openedfile;
     Graph graph = new Graph();
+    ArrayList<Node> tmpNode = new ArrayList<Node>();
 
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(800,600));
@@ -76,6 +78,7 @@ public class GUIDialog extends JDialog {
         String loadfile="";
         InputStream in = new FileInputStream(f);
         int source_flag=0;
+        int add_flag=0;
         int node_count=0;
         int size = in.available();
 
@@ -83,6 +86,7 @@ public class GUIDialog extends JDialog {
             loadfile=loadfile+(char) in.read();
         }
         in.close();
+        /*
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
@@ -116,6 +120,7 @@ public class GUIDialog extends JDialog {
         graph.addNode(nodeD);
         graph.addNode(nodeE);
         graph.addNode(nodeF);
+         */
         for (String retval1: loadfile.split("\n")){
             source_flag=0;
             node_count=node_count+1;
@@ -123,12 +128,64 @@ public class GUIDialog extends JDialog {
                 for(String retval3: retval2.split(":")){
                     if (source_flag==0){
                         Node newNode=new Node(retval3);
+                        tmpNode.add(newNode);
                         source_flag=1;
                     }
                 }
             }
         }
-        System.out.println(node_count);
+        for (String retval1: loadfile.split("\n")){
+            source_flag=0;
+            add_flag=0;
+            Node soure_Node = null;
+            for (String retval2: retval1.split(" ")){
+                Node adjunctNode=null;
+                int adjunctDist = 0;
+                boolean isDistance=false;
+                for(String retval3: retval2.split(":")){
+                    if (source_flag==0){
+                        source_flag=1;
+                        for (int j=0;j<node_count;j++){
+                            if (tmpNode.get(j).getName().equals(retval3)){
+                                soure_Node=tmpNode.get(j);
+                            }
+                        }
+                    }
+                    else {
+                        if (!isDistance){
+                            for (int j=0;j<node_count;j++){
+                                if (tmpNode.get(j).getName().equals(retval3)){
+                                    adjunctNode=tmpNode.get(j);
+                                }
+                            }
+                            isDistance=true;
+                        }
+                        else {
+                            if (retval3!=null){
+                                try {
+                                    retval3=retval3.replace("\n", "").replace("\r", "");
+                                    adjunctDist = Integer.parseInt(retval3);
+                                }
+                                catch (NumberFormatException ex){
+                                    ex.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (add_flag==0){
+                    add_flag=1;
+                }
+                else{
+                    assert soure_Node != null;
+                    assert adjunctNode != null;
+                    soure_Node.addAdjacentNode(adjunctNode,adjunctDist);
+                }
+            }
+        }
+        for (int i=0;i<node_count;i++) {
+            graph.addNode(tmpNode.get(i));
+        }
         openedfile.setText(loadfile);
     }
 
