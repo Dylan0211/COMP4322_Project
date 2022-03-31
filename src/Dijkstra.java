@@ -37,10 +37,9 @@ public class Dijkstra {
         while(incomingNodes.size() != 0){
             Node currentNode = getCurrentNode(incomingNodes);
             incomingNodes.remove(currentNode);
-            for (Map.Entry<Node, Integer> adjacentEntry: currentNode.getAdjacentNodes().entrySet()){
+            for (Node adjacentNode: currentNode.getAdjacentNodes().keySet()){
                 StringBuilder sb = new StringBuilder();
-                Node adjacentNode = adjacentEntry.getKey();
-                int edgeWeight = adjacentEntry.getValue();
+                int edgeWeight = currentNode.getAdjacentNodes().get(adjacentNode);
                 if (!pastNodes.contains(adjacentNode)){ // do not consider finalized nodes
                     int sourceDistance = currentNode.getDistance();
                     if (sourceDistance + edgeWeight < adjacentNode.getDistance()){ // distance updates

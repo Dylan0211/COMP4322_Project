@@ -29,6 +29,11 @@ public class Main {
         nodeD.addAdjacentNode(nodeC, 1);
         nodeD.addAdjacentNode(nodeE, 3);
 
+        nodeE.addAdjacentNode(nodeB, 3);
+        nodeE.addAdjacentNode(nodeC, 6);
+        nodeE.addAdjacentNode(nodeD, 3);
+        nodeE.addAdjacentNode(nodeF, 5);
+
         nodeF.addAdjacentNode(nodeB, 2);
         nodeF.addAdjacentNode(nodeE, 5);
 
@@ -41,10 +46,15 @@ public class Main {
         graph.addNode(nodeE);
         graph.addNode(nodeF);
 
+        // test outputGraph function
+        graph.outputGraph("test.lsa");
+
+        /*
         ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
         for (String step: singleSteps){
             System.out.println(step);
         }
-        //System.out.println(graph.getSummaryTable("A"));
+        System.out.println("\n"+graph.getSummaryTable("A"));
+         */
     }
 }
