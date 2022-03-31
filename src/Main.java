@@ -40,6 +40,6 @@ public class Main {
         graph.addNode(nodeF);
 
         Dijkstra.calculateShortestPath(graph, nodeA);
-        System.out.println(graph.printSummaryTable("A"));
+        System.out.println(graph.getSummaryTable("A"));
     }
 }

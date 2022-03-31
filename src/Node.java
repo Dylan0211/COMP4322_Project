@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Node {
     private String name;
-    private LinkedList<Node> shortestPath = new LinkedList<>();
+    private LinkedList<Node> shortestPath = null;
     private int distance = Integer.MAX_VALUE;
     HashMap<Node, Integer> adjacentNodes = new HashMap<>();
 

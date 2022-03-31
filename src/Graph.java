@@ -32,7 +32,7 @@ public class Graph {
     /**
      * This method prints the summary table for compute-all function
      */
-    public String printSummaryTable(String sourceName){
+    public String getSummaryTable(String sourceName){
         Node source = null;
         String returnStr="";
         for (Node value : nodes) {

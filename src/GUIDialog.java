@@ -67,7 +67,7 @@ public class GUIDialog extends JDialog {
     }
     private void onComputeall() {
         Dijkstra.calculateShortestPath(graph, graph.sourceNode(sourceTextField.getText()));
-        textArea1.setText(graph.printSummaryTable(sourceTextField.getText()));
+        textArea1.setText(graph.getSummaryTable(sourceTextField.getText()));
     }
     private void onLoadfile() throws IOException {
         String filepath=new File("").getAbsolutePath();
