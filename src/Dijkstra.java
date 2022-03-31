@@ -47,9 +47,9 @@ public class Dijkstra {
                     int sourceDistance = currentNode.getDistance();
                     if (sourceDistance + edgeWeight < adjacentNode.getDistance()){ // distance updates
                         if (adjacentNode.getDistance() == Integer.MAX_VALUE)  // new node found
-                            sb.append("Found ").append(adjacentNode.getName()).append(" : ");
+                            sb.append("Found ").append(adjacentNode.getName()).append(": Path: ");
                         else // distance updates
-                            sb.append("Updated ").append(adjacentNode.getName()).append(" : ");
+                            sb.append("Updated ").append(adjacentNode.getName()).append(": Path: ");
 
                         adjacentNode.setDistance(sourceDistance + edgeWeight);
                         LinkedList<Node> shortestPath = new LinkedList<Node>(currentNode.getShortestPath());
@@ -59,7 +59,8 @@ public class Dijkstra {
                         for (Node node: adjacentNode.getShortestPath())
                             sb.append(node.getName()).append(">");
                         sb.append(adjacentNode.getName()).append(" ");
-                        sb.append("Cost: ").append(adjacentNode.getDistance()).append("\n");
+                        sb.append("Cost: ").append(adjacentNode.getDistance());
+                        sb.append(" [press any key to continue]\n");
                     }
                     incomingNodes.add(adjacentNode);
                 }
