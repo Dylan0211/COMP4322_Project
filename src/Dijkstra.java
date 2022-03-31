@@ -1,7 +1,4 @@
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Dijkstra {
     /**
@@ -29,10 +26,10 @@ public class Dijkstra {
      * @param source source node
      * @return single-step mode output strings
      */
-    public static String calculateShortestPath(Graph graph, Node source){
+    public static ArrayList<String> calculateShortestPath(Graph graph, Node source){
         Set<Node> pastNodes = new HashSet<>(); // nodes that are already finalized
         Set<Node> incomingNodes = new HashSet<>(); // nodes that need to be processed
-        StringBuilder sb = new StringBuilder(); // set of all single step outputs
+        ArrayList<String> singleStepOutputs = new ArrayList<String>(); // set of all single step outputs
 
         source.setDistance(0);
         incomingNodes.add(source);
@@ -41,6 +38,7 @@ public class Dijkstra {
             Node currentNode = getCurrentNode(incomingNodes);
             incomingNodes.remove(currentNode);
             for (Map.Entry<Node, Integer> adjacentEntry: currentNode.getAdjacentNodes().entrySet()){
+                StringBuilder sb = new StringBuilder();
                 Node adjacentNode = adjacentEntry.getKey();
                 int edgeWeight = adjacentEntry.getValue();
                 if (!pastNodes.contains(adjacentNode)){ // do not consider finalized nodes
@@ -60,13 +58,14 @@ public class Dijkstra {
                             sb.append(node.getName()).append(">");
                         sb.append(adjacentNode.getName()).append(" ");
                         sb.append("Cost: ").append(adjacentNode.getDistance());
-                        sb.append(" [press any key to continue]\n");
+                        sb.append(" [press any key to continue]");
+                        singleStepOutputs.add(sb.toString());
                     }
                     incomingNodes.add(adjacentNode);
                 }
             }
             pastNodes.add(currentNode);
         }
-        return sb.toString();
+        return singleStepOutputs;
     }
 }

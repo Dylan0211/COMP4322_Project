@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -39,8 +41,10 @@ public class Main {
         graph.addNode(nodeE);
         graph.addNode(nodeF);
 
-        String singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
-        System.out.println(singleSteps);
+        ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
+        for (String step: singleSteps){
+            System.out.println(step);
+        }
         //System.out.println(graph.getSummaryTable("A"));
     }
 }
