@@ -16,8 +16,6 @@ public class GUIDialog extends JDialog {
     private JTextField selectSourceTextField;
     private JTextArea openedfile;
     Graph graph = new Graph();
-    ArrayList<Node> tmpNode = new ArrayList<Node>();
-
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(800,600));
         setContentPane(contentPane);
@@ -72,6 +70,7 @@ public class GUIDialog extends JDialog {
         textArea1.setText(graph.getSummaryTable(sourceTextField.getText()));
     }
     private void onLoadfile() throws IOException {
+        ArrayList<Node> tmpNode = new ArrayList<Node>();
         String filepath=new File("").getAbsolutePath();
         filepath=filepath+"\\src\\routes.lsa";
         File f = new File(filepath);
