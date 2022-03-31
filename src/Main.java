@@ -2,7 +2,6 @@ public class Main {
 
     public static void main(String[] args) {
 	    // test dijkstra algorithm
-        /*
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
@@ -40,8 +39,7 @@ public class Main {
         graph.addNode(nodeE);
         graph.addNode(nodeF);
 
-        graph = Dijkstra.calculateShortestPath(graph, nodeA);
-        graph.printSummaryTable(nodeA);
-         */
+        Dijkstra.calculateShortestPath(graph, nodeA);
+        System.out.println(graph.printSummaryTable("A"));
     }
 }

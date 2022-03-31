@@ -49,7 +49,7 @@ public class Dijkstra {
      * @param source source node
      * @return finalized graph
      */
-    public static Graph calculateShortestPath(Graph graph, Node source){
+    public static void calculateShortestPath(Graph graph, Node source){
         Set<Node> pastNodes = new HashSet<>(); // nodes that are already finalized
         Set<Node> incomingNodes = new HashSet<>(); // nodes that need to be processed
 
@@ -69,7 +69,5 @@ public class Dijkstra {
             }
             pastNodes.add(currentNode);
         }
-
-        return graph;
     }
 }
