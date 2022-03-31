@@ -54,7 +54,6 @@ public class Graph {
         }
         return sb.toString();
     }
-
     /**
      * This method outputs the graph as a .lsa file
      * @param filename name of file
