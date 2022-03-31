@@ -27,7 +27,7 @@ public class Dijkstra {
      * in the graph and construct the final graph.
      * @param graph graph to be processed
      * @param source source node
-     * @return finalized graph
+     * @return single-step mode output strings
      */
     public static String calculateShortestPath(Graph graph, Node source){
         Set<Node> pastNodes = new HashSet<>(); // nodes that are already finalized
