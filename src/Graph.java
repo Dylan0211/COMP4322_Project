@@ -34,25 +34,25 @@ public class Graph {
      */
     public String getSummaryTable(String sourceName){
         Node source = null;
-        String returnStr="";
+        StringBuilder sb = new StringBuilder();
         for (Node value : nodes) {
             if (value.getName().equals(sourceName)) {
                 source = value;
             }
         }
         if (source!=null){
-            returnStr=returnStr+"Source " + sourceName + ": \n";
+            sb.append("Source ").append(sourceName).append(": \n");
             for (Node node: this.getNodes()){
                 if (!node.getName().equals(source.getName())){
-                    returnStr=returnStr+node.getName() + ": Path: ";
+                    sb.append(node.getName()).append(": Path: ");
                     for (Node nodeAlongPath: node.getShortestPath()){
-                        returnStr=returnStr+nodeAlongPath.getName() + ">";
+                        sb.append(nodeAlongPath.getName()).append(">");
                     }
-                    returnStr=returnStr+node.getName() + " ";
-                    returnStr=returnStr+"Cost: " + node.getDistance() + "\n";
+                    sb.append(node.getName()).append(" ");
+                    sb.append("Cost: ").append(node.getDistance()).append("\n");
                 }
             }
         }
-        return returnStr;
+        return sb.toString();
     }
 }
