@@ -29,9 +29,10 @@ public class Dijkstra {
      * @param source source node
      * @return finalized graph
      */
-    public static void calculateShortestPath(Graph graph, Node source){
+    public static String calculateShortestPath(Graph graph, Node source){
         Set<Node> pastNodes = new HashSet<>(); // nodes that are already finalized
         Set<Node> incomingNodes = new HashSet<>(); // nodes that need to be processed
+        StringBuilder sb = new StringBuilder(); // set of all single step outputs
 
         source.setDistance(0);
         incomingNodes.add(source);
@@ -44,17 +45,27 @@ public class Dijkstra {
                 int edgeWeight = adjacentEntry.getValue();
                 if (!pastNodes.contains(adjacentNode)){ // do not consider finalized nodes
                     int sourceDistance = currentNode.getDistance();
-                    if (sourceDistance + edgeWeight < adjacentNode.getDistance()){
+                    if (sourceDistance + edgeWeight < adjacentNode.getDistance()){ // distance updates
+                        if (adjacentNode.getDistance() == Integer.MAX_VALUE)  // new node found
+                            sb.append("Found ").append(adjacentNode.getName()).append(" : ");
+                        else // distance updates
+                            sb.append("Updated ").append(adjacentNode.getName()).append(" : ");
+
                         adjacentNode.setDistance(sourceDistance + edgeWeight);
                         LinkedList<Node> shortestPath = new LinkedList<Node>(currentNode.getShortestPath());
                         shortestPath.add(currentNode);
                         adjacentNode.setShortestPath(shortestPath);
-                    }
 
+                        for (Node node: adjacentNode.getShortestPath())
+                            sb.append(node.getName()).append(">");
+                        sb.append(adjacentNode.getName()).append(" ");
+                        sb.append("Cost: ").append(adjacentNode.getDistance()).append("\n");
+                    }
                     incomingNodes.add(adjacentNode);
                 }
             }
             pastNodes.add(currentNode);
         }
+        return sb.toString();
     }
 }

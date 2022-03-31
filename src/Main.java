@@ -39,7 +39,8 @@ public class Main {
         graph.addNode(nodeE);
         graph.addNode(nodeF);
 
-        Dijkstra.calculateShortestPath(graph, nodeA);
-        System.out.println(graph.getSummaryTable("A"));
+        String singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
+        System.out.println(singleSteps);
+        //System.out.println(graph.getSummaryTable("A"));
     }
 }
