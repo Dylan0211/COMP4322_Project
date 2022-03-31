@@ -55,17 +55,4 @@ public class Graph {
         }
         return returnStr;
     }
-
-    /**
-     * This method prints the output for single step function
-     * @param newNode new node founded
-     */
-    public void printSingleStepOutput(Node newNode){
-        System.out.print("Found " + newNode.getName() + ": Path: ");
-        for (Node nodeAlongPath: newNode.getShortestPath()){
-            System.out.print(nodeAlongPath.getName() + ">");
-        }
-        System.out.print(newNode.getName() + " ");
-        System.out.print("Cost: " + newNode.getDistance() + "\n");
-    }
 }

@@ -23,26 +23,6 @@ public class Dijkstra {
         return currentNode;
     }
     /**
-     * This method is used to calculate the minimum distance of a node and
-     * update the shortest path correspondingly.
-     * If currentNode.getDistance()+edgeWeight < nextNode.getDistance(), the shortest path of
-     * nextNode should be changed to the shortest path of currentNode + currentNode.
-     * If currentNode.getDistance()+edgeWeight >= nextNode.getDistance(), the shortest path
-     * should not change.
-     * @param currentNode source node
-     * @param nextNode node under consideration
-     * @param edgeWeight weight of edge between sourceNode and nextNode
-     */
-    public static void calculateMinDistance(Node currentNode, Node nextNode, int edgeWeight){
-        int sourceDistance = currentNode.getDistance();
-        if (sourceDistance + edgeWeight < nextNode.getDistance()){
-            nextNode.setDistance(sourceDistance + edgeWeight);
-            LinkedList<Node> shortestPath = new LinkedList<Node>(currentNode.getShortestPath());
-            shortestPath.add(currentNode);
-            nextNode.setShortestPath(shortestPath);
-        }
-    }
-    /**
      * This method is used to calculate the shortest path from source node to every node
      * in the graph and construct the final graph.
      * @param graph graph to be processed
@@ -63,7 +43,14 @@ public class Dijkstra {
                 Node adjacentNode = adjacentEntry.getKey();
                 int edgeWeight = adjacentEntry.getValue();
                 if (!pastNodes.contains(adjacentNode)){ // do not consider finalized nodes
-                    calculateMinDistance(currentNode, adjacentNode, edgeWeight);
+                    int sourceDistance = currentNode.getDistance();
+                    if (sourceDistance + edgeWeight < adjacentNode.getDistance()){
+                        adjacentNode.setDistance(sourceDistance + edgeWeight);
+                        LinkedList<Node> shortestPath = new LinkedList<Node>(currentNode.getShortestPath());
+                        shortestPath.add(currentNode);
+                        adjacentNode.setShortestPath(shortestPath);
+                    }
+
                     incomingNodes.add(adjacentNode);
                 }
             }
