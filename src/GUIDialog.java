@@ -13,8 +13,9 @@ public class GUIDialog extends JDialog {
     private JButton loadfileButton;
     private JTextArea textArea1;
     private JTextField sourceTextField;
-    private JTextField selectSourceTextField;
+    private JTextField inputYourCommandTextField;
     private JTextArea openedfile;
+    private JButton submitButton;
     Graph graph = new Graph();
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(800,600));
@@ -25,6 +26,12 @@ public class GUIDialog extends JDialog {
         singleStepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onSinglestep();
+            }
+        });
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         computeAllButton.addActionListener(new ActionListener() {
@@ -77,8 +84,8 @@ public class GUIDialog extends JDialog {
     private void onComputeall() throws IOException {
         graph=new Graph();
         onLoadfile();
-        Dijkstra.calculateShortestPath(graph, graph.getSourceNode(sourceTextField.getText()));
-        textArea1.setText(graph.getSummaryTable(graph.getSourceNode(sourceTextField.getText())));
+        Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
+        textArea1.setText(graph.getSummaryTable(graph.getNode(sourceTextField.getText())));
     }
 
     /**
