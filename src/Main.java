@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Main {
-
     public static void main(String[] args) {
 	    // test dijkstra algorithm
         Node nodeA = new Node("A");
@@ -39,18 +38,18 @@ public class Main {
 
         Graph graph = new Graph();
 
-        graph.addNode(nodeA);
-        graph.addNode(nodeB);
-        graph.addNode(nodeC);
-        graph.addNode(nodeD);
-        graph.addNode(nodeE);
         graph.addNode(nodeF);
+        graph.addNode(nodeA);
+        graph.addNode(nodeE);
+        graph.addNode(nodeB);
+        graph.addNode(nodeD);
+        graph.addNode(nodeC);
 
         // test outputGraph function
-        graph.removeNode(nodeB);
+        graph.breakLine(graph.getNode("A"), graph.getNode("C"));
         graph.outputGraph("test.lsa");
 
-        ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
+        ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, graph.getNode("A"));
         for (String step: singleSteps){
             System.out.println(step);
         }
