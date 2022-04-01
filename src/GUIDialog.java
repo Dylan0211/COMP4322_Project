@@ -66,8 +66,8 @@ public class GUIDialog extends JDialog {
 
     }
     private void onComputeall() {
-        Dijkstra.calculateShortestPath(graph, graph.getSourceNode(sourceTextField.getText()));
-        textArea1.setText(graph.getSummaryTable(sourceTextField.getText()));
+        Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
+        textArea1.setText(graph.getSummaryTable(graph.getNode(sourceTextField.getText())));
     }
     private void onLoadfile() throws IOException {
         ArrayList<Node> tmpNode = new ArrayList<Node>();
@@ -183,7 +183,7 @@ public class GUIDialog extends JDialog {
             }
         }
         for (int i=0;i<node_count;i++) {
-            graph.addNode(tmpNode.get(i));
+            //graph.addNode(tmpNode.get(i));
         }
         openedfile.setText(loadfile);
     }

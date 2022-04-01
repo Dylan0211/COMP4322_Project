@@ -47,14 +47,14 @@ public class Main {
         graph.addNode(nodeF);
 
         // test outputGraph function
+        graph.removeNode(nodeB);
         graph.outputGraph("test.lsa");
 
-        /*
         ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, nodeA);
         for (String step: singleSteps){
             System.out.println(step);
         }
-        System.out.println("\n"+graph.getSummaryTable("A"));
-         */
+        System.out.println("\n"+graph.getSummaryTable(graph.getNode("A")));
+
     }
 }
