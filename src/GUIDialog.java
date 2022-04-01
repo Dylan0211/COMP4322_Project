@@ -29,7 +29,11 @@ public class GUIDialog extends JDialog {
         });
         computeAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onComputeall();
+                try {
+                    onComputeall();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         loadfileButton.addActionListener(new ActionListener() {
@@ -65,7 +69,9 @@ public class GUIDialog extends JDialog {
     private void onSinglestep(){
 
     }
-    private void onComputeall() {
+    private void onComputeall() throws IOException {
+        graph=new Graph();
+        onLoadfile();
         Dijkstra.calculateShortestPath(graph, graph.getSourceNode(sourceTextField.getText()));
         textArea1.setText(graph.getSummaryTable(sourceTextField.getText()));
     }
