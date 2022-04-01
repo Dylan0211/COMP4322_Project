@@ -11,6 +11,20 @@ public class Graph {
     private ArrayList<String> nameList = new ArrayList<String>();
 
     /**
+     * This methods return the node that corresponds to the nodeName
+     * @param nodeName
+     * @return
+     */
+    public Node getSourceNode(String nodeName){
+        Node node=null;
+        for (Node value : nodes) {
+            if (value.getName().equals(nodeName)) {
+                node = value;
+            }
+        }
+        return node;
+    }
+    /**
      * This method adds a new node to the graph
      * @param node node to be added
      */

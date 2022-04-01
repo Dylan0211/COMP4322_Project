@@ -69,12 +69,22 @@ public class GUIDialog extends JDialog {
     private void onSinglestep(){
 
     }
+
+    /**
+     * This function do the compute all-function and print the results to the GUI
+     * @throws IOException
+     */
     private void onComputeall() throws IOException {
         graph=new Graph();
         onLoadfile();
         Dijkstra.calculateShortestPath(graph, graph.getSourceNode(sourceTextField.getText()));
-        textArea1.setText(graph.getSummaryTable(sourceTextField.getText()));
+        textArea1.setText(graph.getSummaryTable(graph.getSourceNode(sourceTextField.getText())));
     }
+
+    /**
+     * This function loads the lsa file to the program
+     * @throws IOException
+     */
     private void onLoadfile() throws IOException {
         ArrayList<Node> tmpNode = new ArrayList<Node>();
         String filepath=new File("").getAbsolutePath();
@@ -91,41 +101,6 @@ public class GUIDialog extends JDialog {
             loadfile=loadfile+(char) in.read();
         }
         in.close();
-        /*
-        Node nodeA = new Node("A");
-        Node nodeB = new Node("B");
-        Node nodeC = new Node("C");
-        Node nodeD = new Node("D");
-        Node nodeE = new Node("E");
-        Node nodeF = new Node("F");
-
-        nodeA.addAdjacentNode(nodeB, 5);
-        nodeA.addAdjacentNode(nodeC, 3);
-        nodeA.addAdjacentNode(nodeD, 5);
-
-        nodeB.addAdjacentNode(nodeA, 5);
-        nodeB.addAdjacentNode(nodeC, 4);
-        nodeB.addAdjacentNode(nodeE, 3);
-        nodeB.addAdjacentNode(nodeF, 2);
-
-        nodeC.addAdjacentNode(nodeA, 3);
-        nodeC.addAdjacentNode(nodeB, 4);
-        nodeC.addAdjacentNode(nodeD, 1);
-        nodeC.addAdjacentNode(nodeE, 6);
-
-        nodeD.addAdjacentNode(nodeA, 5);
-        nodeD.addAdjacentNode(nodeC, 1);
-        nodeD.addAdjacentNode(nodeE, 3);
-
-        nodeF.addAdjacentNode(nodeB, 2);
-        nodeF.addAdjacentNode(nodeE, 5);
-        graph.addNode(nodeA);
-        graph.addNode(nodeB);
-        graph.addNode(nodeC);
-        graph.addNode(nodeD);
-        graph.addNode(nodeE);
-        graph.addNode(nodeF);
-         */
         for (String retval1: loadfile.split("\n")){
             source_flag=0;
             node_count=node_count+1;
