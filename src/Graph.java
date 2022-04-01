@@ -5,63 +5,85 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.*;
 import java.util.*;
+
 public class Graph {
     private ArrayList<Node> nodes = new ArrayList<Node>();
+    private ArrayList<String> nameList = new ArrayList<String>();
 
-    public void addNode(Node node) { this.nodes.add(node); }
-    public ArrayList<Node> getNodes(){
-        return this.nodes;
+    /**
+     * This method adds a new node to the graph
+     * @param node node to be added
+     */
+    public void addNode(Node node) {
+        this.nodes.add(node);
+        this.nameList.add(node.getName());
     }
     /**
-     * This method get the source node object
-     * @param sourceName name of source node
-     * @return source node object
+     * This method removes a node from the graph
+     * @param node node to be removed
      */
-    public Node getSourceNode(String sourceName){
-        Node source = null;
+    public void removeNode(Node node){ // need check whether node exists
+        this.nodes.remove(node);
+        this.nameList.remove(node.getName());
+        for (Node eachNode: nodes){
+            eachNode.getAdjacentNodes().remove(node);
+        }
+    }
+    /**
+     * This method removes a link between two nodes
+     * @param startNode first node
+     * @param endNode second node
+     */
+    public void breakLine(Node startNode, Node endNode){ // need check whether nodes exist
+        startNode.getAdjacentNodes().remove(endNode);
+        endNode.getAdjacentNodes().remove(startNode);
+    }
+    /**
+     * This method gets the node object
+     * @param nodeName of a node
+     * @return node object / null if not found
+     */
+    public Node getNode(String nodeName){
+        Node target = null;
         for (Node value : this.nodes) {
-            if (value.getName().equals(sourceName)) {
-                source = value;
+            if (value.getName().equals(nodeName)) {
+                target = value;
             }
         }
-        return source;
+        return target;
     }
     /**
      * This method returns the summary table for compute-all function
-     * @param sourceName name of source node
+     * @param source object
      * @return summary table
      */
-    public String getSummaryTable(String sourceName){
-        Node source = null;
+    public String getSummaryTable(Node source){
         StringBuilder sb = new StringBuilder();
-        for (Node value : this.nodes) {
-            if (value.getName().equals(sourceName)) {
-                source = value;
-            }
-        }
-        if (source!=null){
-            sb.append("Source ").append(sourceName).append(": \n");
-            for (Node node: this.getNodes()){
-                if (!node.getName().equals(source.getName())){
-                    sb.append(node.getName()).append(": Path: ");
-                    for (Node nodeAlongPath: node.getShortestPath()){
-                        sb.append(nodeAlongPath.getName()).append(">");
-                    }
-                    sb.append(node.getName()).append(" ");
-                    sb.append("Cost: ").append(node.getDistance()).append("\n");
+        sb.append("Source ").append(source.getName()).append(": \n");
+        Collections.sort(this.nameList);
+        for (String nodeName: this.nameList){
+            Node node = this.getNode(nodeName);
+            if (!nodeName.equals(source.getName())){
+                sb.append(nodeName).append(": Path: ");
+                for (Node nodeAlongPath: node.getShortestPath()){
+                    sb.append(nodeAlongPath.getName()).append(">");
                 }
+                sb.append(nodeName).append(" ");
+                sb.append("Cost: ").append(node.getDistance()).append("\n");
             }
         }
         return sb.toString();
     }
     /**
      * This method outputs the graph as a .lsa file
-     * @param filename name of file
+     * @param filename of file
      */
     public void outputGraph(String filename) {
         StringBuilder sb = new StringBuilder();
-        for (Node node: this.nodes){
-            sb.append(node.getName()).append(":");
+        Collections.sort(this.nameList);
+        for (String name: this.nameList){
+            Node node = this.getNode(name);
+            sb.append(name).append(":");
             TreeMap<String, Integer> sortedMap = new TreeMap<>();
             for (Node adjacentNode: node.getAdjacentNodes().keySet())
                 sortedMap.put(adjacentNode.getName(), node.getAdjacentNodes().get(adjacentNode));
