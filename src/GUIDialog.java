@@ -111,7 +111,7 @@ public class GUIDialog extends JDialog {
         for (String retval1: loadfile.split("\n")){
             source_flag=0;
             node_count=node_count+1;
-            for (String retval2: retval1.split(" ")){
+            for (String retval2: retval1.split("[ ]+")){
                 for(String retval3: retval2.split(":")){
                     if (source_flag==0){
                         Node newNode=new Node(retval3);
@@ -125,7 +125,7 @@ public class GUIDialog extends JDialog {
             source_flag=0;
             add_flag=0;
             Node soure_Node = null;
-            for (String retval2: retval1.split(" ")){
+            for (String retval2: retval1.split("[ ]+")){
                 Node adjunctNode=null;
                 int adjunctDist = 0;
                 boolean isDistance=false;

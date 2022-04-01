@@ -46,8 +46,8 @@ public class Main {
         graph.addNode(nodeC);
 
         // test outputGraph function
-        graph.breakLine(graph.getNode("A"), graph.getNode("C"));
-        graph.outputGraph("test.lsa");
+        //graph.breakLine(graph.getNode("A"), graph.getNode("C"));
+        //graph.outputGraph("test.lsa");
 
         ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, graph.getNode("A"));
         for (String step: singleSteps){

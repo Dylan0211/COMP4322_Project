@@ -42,6 +42,7 @@ public class Dijkstra {
                 int edgeWeight = currentNode.getAdjacentNodes().get(adjacentNode);
                 if (!pastNodes.contains(adjacentNode)){ // do not consider finalized nodes
                     int sourceDistance = currentNode.getDistance();
+                    sb.append("Current Node: ").append(currentNode.getName()).append(", ");
                     if (sourceDistance + edgeWeight < adjacentNode.getDistance()){ // distance updates
                         if (adjacentNode.getDistance() == Integer.MAX_VALUE)  // new node found
                             sb.append("Found ").append(adjacentNode.getName()).append(": Path: ");
@@ -57,7 +58,13 @@ public class Dijkstra {
                             sb.append(node.getName()).append(">");
                         sb.append(adjacentNode.getName()).append(" ");
                         sb.append("Cost: ").append(adjacentNode.getDistance());
-                        sb.append(" [press any key to continue]");
+                        sb.append(" [click \"Single Step\" button to continue]");
+                        singleStepOutputs.add(sb.toString());
+                    }
+                    else{ // distance not updates
+                        sb.append("Not update ").append(adjacentNode.getName()).append(": Since ");
+                        sb.append(sourceDistance).append("+").append(edgeWeight);
+                        sb.append(" > ").append(adjacentNode.getDistance()).append(" [click \"Single Step\" button to continue]");
                         singleStepOutputs.add(sb.toString());
                     }
                     incomingNodes.add(adjacentNode);
@@ -65,6 +72,7 @@ public class Dijkstra {
             }
             pastNodes.add(currentNode);
         }
+        singleStepOutputs.add("End of algorithm");
         return singleStepOutputs;
     }
 }
