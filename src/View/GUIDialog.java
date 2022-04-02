@@ -27,6 +27,7 @@ public class GUIDialog extends JDialog {
     private JTextField breakTextfield;
     private JButton breakButton;
     private boolean singlestep_flag=true;
+    private String singleStepStr;
     private int singlestep_count=0;
     private ArrayList<String> singleStr;
     Graph graph = new Graph();
@@ -104,13 +105,17 @@ public class GUIDialog extends JDialog {
     }
 
     private void onSinglestep() throws IOException {
-        if (singlestep_flag==true) {
+        if (singlestep_flag) {
             graph=new Graph();
             onLoadfile();
             singleStr=controller.getSingleStepOutputs(graph,graph.getNode(sourceTextField.getText()));
             singlestep_flag=false;
+            singleStepStr=singleStr.get(singlestep_count);
         }
-        textArea1.setText(singleStr.get(singlestep_count));
+        else {
+            singleStepStr=singleStepStr+"\n"+singleStr.get(singlestep_count);
+        }
+        textArea1.setText(singleStepStr);
         singlestep_count=singlestep_count+1;
         if (singlestep_count==singleStr.size()){
             singlestep_count=0;
