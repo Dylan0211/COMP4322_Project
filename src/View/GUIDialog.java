@@ -154,6 +154,8 @@ public class GUIDialog extends JDialog {
                     else {
                         adjunctDistance=Integer.parseInt(retval2);
                         tmpNode.addAdjacentNode(adjunctNode,adjunctDistance);
+                        assert adjunctNode != null;
+                        adjunctNode.addAdjacentNode(tmpNode,adjunctDistance);
                     }
                 }
             }
