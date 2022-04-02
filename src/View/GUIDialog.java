@@ -4,7 +4,6 @@ import Model.Dijkstra;
 import Model.Graph;
 import Model.Node;
 import Controller.Controller;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,25 +19,46 @@ public class GUIDialog extends JDialog {
     private JButton loadfileButton;
     private JTextArea textArea1;
     private JTextField sourceTextField;
-    private JTextField inputYourCommandTextField;
+    private JTextField newNodeTextField;
     private JTextArea openedfile;
-    private JButton submitButton;
-
+    private JButton addButton;
+    private JTextField removeTextField;
+    private JButton removeButton;
+    private JTextField breakTextfield;
+    private JButton breakButton;
+    private boolean singlestep_flag=true;
+    private int singlestep_count=0;
+    private ArrayList<String> singleStr;
     Graph graph = new Graph();
     Controller controller = new Controller();
-
     public GUIDialog() {
-        contentPane.setPreferredSize(new Dimension(800,600));
+        contentPane.setPreferredSize(new Dimension(1200,600));
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
         singleStepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onSinglestep();
+                try {
+                    onSinglestep();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
-        submitButton.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        breakButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -83,19 +103,29 @@ public class GUIDialog extends JDialog {
         dispose();
     }
 
-    private void onSinglestep(){
-
+    private void onSinglestep() throws IOException {
+        if (singlestep_flag==true) {
+            graph=new Graph();
+            onLoadfile();
+            singleStr=controller.getSingleStepOutputs(graph,graph.getNode(sourceTextField.getText()));
+            singlestep_flag=false;
+        }
+        textArea1.setText(singleStr.get(singlestep_count));
+        singlestep_count=singlestep_count+1;
+        if (singlestep_count==singleStr.size()){
+            singlestep_count=0;
+            singlestep_flag=true;
+        }
     }
-
     /**
-     * This function do the compute-all function and print the results to the GUI
+     * This function do the compute all-function and print the results to the GUI
      * @throws IOException
      */
     private void onComputeall() throws IOException {
         graph=new Graph();
         onLoadfile();
         Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
-        textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()), graph));
+        textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()),graph));
     }
 
     /**
@@ -181,7 +211,7 @@ public class GUIDialog extends JDialog {
             }
         }
         for (int i=0;i<node_count;i++) {
-            controller.addNode(tmpNode.get(i), graph);
+            controller.addNode(tmpNode.get(i),graph);
         }
         openedfile.setText(loadfile);
     }
@@ -189,5 +219,12 @@ public class GUIDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public static void main(String[] args) {
+        GUIDialog dialog = new GUIDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
     }
 }

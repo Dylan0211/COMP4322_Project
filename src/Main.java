@@ -10,12 +10,12 @@ public class Main {
     public static void main(String[] args) {
         Controller controller = new Controller();
         // test GUI
-        /*
+
         GUIDialog dialog = new GUIDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
-         */
+
 	    // test dijkstra algorithm
 
         Node nodeA = new Node("A");
