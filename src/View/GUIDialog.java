@@ -1,3 +1,10 @@
+package View;
+
+import Model.Dijkstra;
+import Model.Graph;
+import Model.Node;
+import Controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,7 +23,10 @@ public class GUIDialog extends JDialog {
     private JTextField inputYourCommandTextField;
     private JTextArea openedfile;
     private JButton submitButton;
+
     Graph graph = new Graph();
+    Controller controller = new Controller();
+
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(800,600));
         setContentPane(contentPane);
@@ -78,14 +88,14 @@ public class GUIDialog extends JDialog {
     }
 
     /**
-     * This function do the compute all-function and print the results to the GUI
+     * This function do the compute-all function and print the results to the GUI
      * @throws IOException
      */
     private void onComputeall() throws IOException {
         graph=new Graph();
         onLoadfile();
         Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
-        textArea1.setText(graph.getSummaryTable(graph.getNode(sourceTextField.getText())));
+        textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()), graph));
     }
 
     /**
@@ -171,7 +181,7 @@ public class GUIDialog extends JDialog {
             }
         }
         for (int i=0;i<node_count;i++) {
-            graph.addNode(tmpNode.get(i));
+            controller.addNode(tmpNode.get(i), graph);
         }
         openedfile.setText(loadfile);
     }
@@ -179,12 +189,5 @@ public class GUIDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        GUIDialog dialog = new GUIDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }

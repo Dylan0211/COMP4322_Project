@@ -1,8 +1,22 @@
+import Model.Dijkstra;
+import Model.Graph;
+import Model.Node;
+import Controller.Controller;
+import View.GUIDialog;
+
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        Controller controller = new Controller();
+        // test GUI
+        GUIDialog dialog = new GUIDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+
 	    // test dijkstra algorithm
+
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
@@ -38,22 +52,22 @@ public class Main {
 
         Graph graph = new Graph();
 
-        graph.addNode(nodeF);
-        graph.addNode(nodeA);
-        graph.addNode(nodeE);
-        graph.addNode(nodeB);
-        graph.addNode(nodeD);
-        graph.addNode(nodeC);
+        controller.addNode(nodeA, graph);
+        controller.addNode(nodeB, graph);
+        controller.addNode(nodeC, graph);
+        controller.addNode(nodeD, graph);
+        controller.addNode(nodeE, graph);
+        controller.addNode(nodeF, graph);
 
         // test outputGraph function
-        //graph.breakLine(graph.getNode("A"), graph.getNode("C"));
-        //graph.outputGraph("test.lsa");
+        controller.removeNode(graph.getNode("B"), graph);
+        controller.outputGraph(graph);
 
         ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, graph.getNode("A"));
         for (String step: singleSteps){
             System.out.println(step);
         }
-        System.out.println("\n"+graph.getSummaryTable(graph.getNode("A")));
+        System.out.println("\n"+controller.getSummaryTable(graph.getNode("A"), graph));
 
     }
 }

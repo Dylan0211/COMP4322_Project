@@ -1,31 +1,32 @@
+package Controller;
+
+import Model.Graph;
+import Model.Node;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class Graph {
-    private ArrayList<Node> nodes = new ArrayList<Node>();
-    private ArrayList<String> nameList = new ArrayList<String>();
-
+public class Controller {
     /**
      * This method adds a new node to the graph
      * @param node node to be added
      */
-    public void addNode(Node node) {
-        this.nodes.add(node);
-        this.nameList.add(node.getName());
+    public void addNode(Node node, Graph graph) {
+        graph.getNodesList().add(node);
+        graph.getNameList().add(node.getName());
     }
     /**
      * This method removes a node from the graph
      * @param node node to be removed
      */
-    public void removeNode(Node node){ // need check whether node exists
-        this.nodes.remove(node);
-        this.nameList.remove(node.getName());
-        for (Node eachNode: nodes){
+    public void removeNode(Node node, Graph graph){ // need check whether node exists
+        graph.getNodesList().remove(node);
+        graph.getNameList().remove(node.getName());
+        for (Node eachNode: graph.getNodesList()){
             eachNode.getAdjacentNodes().remove(node);
         }
     }
@@ -39,30 +40,16 @@ public class Graph {
         endNode.getAdjacentNodes().remove(startNode);
     }
     /**
-     * This method gets the node object
-     * @param nodeName of a node
-     * @return node object / null if not found
-     */
-    public Node getNode(String nodeName){
-        Node target = null;
-        for (Node value : this.nodes) {
-            if (value.getName().equals(nodeName)) {
-                target = value;
-            }
-        }
-        return target;
-    }
-    /**
      * This method returns the summary table for compute-all function
      * @param source object
      * @return summary table
      */
-    public String getSummaryTable(Node source){
+    public String getSummaryTable(Node source, Graph graph){
         StringBuilder sb = new StringBuilder();
         sb.append("Source ").append(source.getName()).append(": \n");
-        Collections.sort(this.nameList);
-        for (String nodeName: this.nameList){
-            Node node = this.getNode(nodeName);
+        Collections.sort(graph.getNameList());
+        for (String nodeName: graph.getNameList()){
+            Node node = graph.getNode(nodeName);
             if (!nodeName.equals(source.getName())){
                 sb.append(nodeName).append(": Path: ");
                 for (Node nodeAlongPath: node.getShortestPath()){
@@ -76,13 +63,13 @@ public class Graph {
     }
     /**
      * This method outputs the graph as a .lsa file
-     * @param filename of file
+     * @param graph to be output
      */
-    public void outputGraph(String filename) {
+    public void outputGraph(Graph graph) {
         StringBuilder sb = new StringBuilder();
-        Collections.sort(this.nameList);
-        for (String name: this.nameList){
-            Node node = this.getNode(name);
+        Collections.sort(graph.getNameList());
+        for (String name: graph.getNameList()){
+            Node node = graph.getNode(name);
             sb.append(name).append(":");
             TreeMap<String, Integer> sortedMap = new TreeMap<>();
             for (Node adjacentNode: node.getAdjacentNodes().keySet())
@@ -95,8 +82,9 @@ public class Graph {
             }
             sb.append("\n");
         }
+        String filepath = new File("").getAbsolutePath();
         try{
-            FileWriter writeToFile = new FileWriter(filename, false);
+            FileWriter writeToFile = new FileWriter(filepath+"\\src\\routes.lsa", false);
             writeToFile.write(sb.toString());
             writeToFile.close();
         } catch (IOException e) {
