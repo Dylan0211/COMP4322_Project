@@ -122,6 +122,8 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void onComputeall() throws IOException {
+        singlestep_flag=true;
+        singlestep_count=0;
         graph=new Graph();
         onLoadfile();
         Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
