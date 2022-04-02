@@ -50,7 +50,11 @@ public class GUIDialog extends JDialog {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    addNode();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         removeButton.addActionListener(new ActionListener() {
@@ -122,6 +126,39 @@ public class GUIDialog extends JDialog {
             breakNode.add(node);
         }
         controller.breakLine(graph.getNode(breakNode.get(0)),graph.getNode(breakNode.get(1)));
+        controller.outputGraph(graph);
+        onLoadfile();
+    }
+    private void addNode() throws IOException {
+        Node tmpNode = null;
+        Node adjunctNode = null;
+        int adjunctDistance=0;
+        int source_flag=0;
+        for (String retval: newNodeTextField.getText().split("[ ]+")) {
+            boolean isDistance=false;
+            for(String retval2: retval.split(":")){
+                if (source_flag==0){
+                    tmpNode=new Node(retval2);
+                    source_flag=1;
+                }
+                else {
+                    if (!isDistance){
+                        isDistance=true;
+                        for (int i=0;i<graph.getNodesList().size();i++){
+                            if (graph.getNodesList().get(i).getName().equals(retval2)){
+                                adjunctNode=graph.getNodesList().get(i);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        adjunctDistance=Integer.parseInt(retval2);
+                        tmpNode.addAdjacentNode(adjunctNode,adjunctDistance);
+                    }
+                }
+            }
+        }
+        controller.addNode(tmpNode,graph);
         controller.outputGraph(graph);
         onLoadfile();
     }
