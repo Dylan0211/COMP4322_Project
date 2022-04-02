@@ -17,7 +17,7 @@ public class Main {
         System.exit(0);
 
 	    // test dijkstra algorithm
-
+/*
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
@@ -69,6 +69,6 @@ public class Main {
             System.out.println(step);
         }
         System.out.println("\n"+controller.getSummaryTable(graph.getNode("A"), graph));
-
+        */
     }
 }

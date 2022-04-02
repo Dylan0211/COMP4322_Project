@@ -30,7 +30,7 @@ public class GUIDialog extends JDialog {
     private String singleStepStr;
     private int singlestep_count=0;
     private ArrayList<String> singleStr;
-    Graph graph = new Graph();
+    Graph graph=new Graph();
     Controller controller = new Controller();
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(1200,600));
