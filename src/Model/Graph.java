@@ -6,11 +6,17 @@ import java.lang.*;
 public class Graph {
     private ArrayList<Node> nodes = new ArrayList<Node>();
     private ArrayList<String> nameList = new ArrayList<String>();
-
-    // getters and setters
+    /**
+     * This method gets the node list
+     * @return nodes
+     */
     public ArrayList<Node> getNodesList(){
         return this.nodes;
     }
+    /**
+     * This method gets the name list
+     * @return nameList
+     */
     public ArrayList<String> getNameList(){
         return this.nameList;
     }
