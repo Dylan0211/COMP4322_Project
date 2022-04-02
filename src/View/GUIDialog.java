@@ -56,13 +56,21 @@ public class GUIDialog extends JDialog {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    removeNode();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         breakButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    breakLink();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         computeAllButton.addActionListener(new ActionListener() {
@@ -103,7 +111,20 @@ public class GUIDialog extends JDialog {
         // add your code here
         dispose();
     }
-
+    private void removeNode() throws IOException {
+        controller.removeNode(graph.getNode(removeTextField.getText()),graph);
+        controller.outputGraph(graph);
+        onLoadfile();
+    }
+    private void breakLink() throws IOException {
+        ArrayList<String> breakNode=new ArrayList<>();
+        for (String node: breakTextfield.getText().split(">")){
+            breakNode.add(node);
+        }
+        controller.breakLine(graph.getNode(breakNode.get(0)),graph.getNode(breakNode.get(1)));
+        controller.outputGraph(graph);
+        onLoadfile();
+    }
     private void onSinglestep() throws IOException {
         if (singlestep_flag) {
             graph=new Graph();
@@ -140,6 +161,7 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void onLoadfile() throws IOException {
+        graph=new Graph();
         ArrayList<Node> tmpNode = new ArrayList<Node>();
         String filepath=new File("").getAbsolutePath();
         filepath=filepath+"\\src\\routes.lsa";
