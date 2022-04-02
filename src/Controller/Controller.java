@@ -2,10 +2,12 @@ package Controller;
 
 import Model.Graph;
 import Model.Node;
+import Model.Dijkstra;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -60,6 +62,15 @@ public class Controller {
             }
         }
         return sb.toString();
+    }
+    /**
+     * This method returns the outputs of single-step mode
+     * @param graph graph to be processed
+     * @param source source node
+     * @return single-step mode outputs
+     */
+    public ArrayList<String> getSingleStepOutputs(Graph graph, Node source){
+        return Dijkstra.calculateShortestPath(graph, source);
     }
     /**
      * This method outputs the graph as a .lsa file

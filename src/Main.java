@@ -10,11 +10,12 @@ public class Main {
     public static void main(String[] args) {
         Controller controller = new Controller();
         // test GUI
+        /*
         GUIDialog dialog = new GUIDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
-
+         */
 	    // test dijkstra algorithm
 
         Node nodeA = new Node("A");
@@ -63,7 +64,7 @@ public class Main {
         controller.removeNode(graph.getNode("B"), graph);
         controller.outputGraph(graph);
 
-        ArrayList<String> singleSteps = Dijkstra.calculateShortestPath(graph, graph.getNode("A"));
+        ArrayList<String> singleSteps = controller.getSingleStepOutputs(graph, graph.getNode("A"));
         for (String step: singleSteps){
             System.out.println(step);
         }
