@@ -151,12 +151,18 @@ public class GUIDialog extends JDialog {
         Node adjunctNode = null;
         int adjunctDistance=0;
         int source_flag=0;
+        int duplicate_error=0;
         for (String retval: newNodeTextField.getText().split("[ ]+")) {
             boolean isDistance=false;
             for(String retval2: retval.split(":")){
                 if (source_flag==0){
                     tmpNode=new Node(retval2);
                     source_flag=1;
+                    for (int i=0;i<graph.getNodesList().size();i++){
+                        if (graph.getNodesList().get(i).getName().equals(retval2)){
+                            duplicate_error=1;
+                        }
+                    }
                 }
                 else {
                     if (!isDistance){
@@ -177,9 +183,15 @@ public class GUIDialog extends JDialog {
                 }
             }
         }
-        controller.addNode(tmpNode,graph);
-        controller.outputGraph(graph);
-        onLoadfile();
+        if (duplicate_error==0){
+            controller.addNode(tmpNode,graph);
+            controller.outputGraph(graph);
+            onLoadfile();
+            textArea1.setText("Congratulation! The node is added to the graph !");
+        }
+        else{
+            textArea1.setText("Sorry, the node is already in the graph!");
+        }
     }
     private void onSinglestep() throws IOException {
         if (singlestep_flag) {
