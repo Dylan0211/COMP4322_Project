@@ -11,13 +11,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class GUIDialog extends JDialog {
+    private JPanel panel1;
+    private JPanel panel2;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JButton singleStepButton;
     private JButton computeAllButton;
     private JButton loadfileButton;
+    private JButton helpButton;
     private JTextArea textArea1;
+    private JScrollPane scroll1;
+    private JScrollPane scroll2;
     private JTextField sourceTextField;
     private JTextField newNodeTextField;
     private JTextArea openedfile;
@@ -32,12 +37,24 @@ public class GUIDialog extends JDialog {
     private ArrayList<String> singleStr;
     Graph graph=new Graph();
     Controller controller = new Controller();
+
     public GUIDialog() {
-        contentPane.setPreferredSize(new Dimension(1200,600));
+        contentPane.setPreferredSize(new Dimension(1000, 600));
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
+        scroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        helpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                onHelp();
+            }
+        });
         singleStepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -287,6 +304,31 @@ public class GUIDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    /**
+     * This method creates a new window to show instructive messages
+     */
+    private void onHelp(){
+        String message = "1. How to load file?\n"+
+                "* The .lsa file to be loaded by this application is /src/routes.lsa.\n"+
+                "* You can click the \"Loadfile\" button to load this .lsa file to this application.\n"+
+                "* The content of file will be shown on the right side of the screen.\n"+
+                "2. How to get outputs?\n"+
+                "* This application has two output modes: single-step mode and compute-all mode.\n"+
+                "* After loading the file, click the \"Compute All\" button and the summary table containing\n"+
+                "  Shortest path from source node to every node will be generated on the left side of the window.\n"+
+                "* After loading the file, click the \"Single Step\" button and the application will display\n"+
+                "  a single step through the LSR computation to allow the user to trace the computation path.\n"+
+                "  The outputs will be shown on the left side of the window.\n"+
+                "3. How to conduct dynamic manipulations over the graph?\n"+
+                "* There are in total three kinds of dynamic operations: add new node, remove a node, break a link.\n"+
+                "* Sample inputs for each operations:\n"+
+                "  Add a new node: H: A:3 C:8 D:2 (please follow the format)\n"+
+                "  Remove a node: B (please enter a single node)\n"+
+                "  Break a link: A>C (please follow the format)\n"+
+                "* The changes will be saved to the routes.lsa file and loaded automatically.\n";
+        textArea1.setText(message);
     }
 
     public static void main(String[] args) {
