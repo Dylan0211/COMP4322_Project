@@ -38,6 +38,9 @@ public class GUIDialog extends JDialog {
     Graph graph=new Graph();
     Controller controller = new Controller();
 
+    /**
+     * This function is to start GUI and bind functions to each GUI widget
+     */
     public GUIDialog() {
         contentPane.setPreferredSize(new Dimension(1000, 600));
         setContentPane(contentPane);
@@ -128,15 +131,20 @@ public class GUIDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        // add your code here
-        dispose();
-    }
+    /**
+     * This function is used to remove node from the graph
+     * @throws IOException
+     */
     private void removeNode() throws IOException {
         controller.removeNode(graph.getNode(removeTextField.getText()),graph);
         controller.outputGraph(graph);
         onLoadfile();
     }
+
+    /**
+     * This function is used to break link between nodes
+     * @throws IOException
+     */
     private void breakLink() throws IOException {
         ArrayList<String> breakNode=new ArrayList<>();
         for (String node: breakTextfield.getText().split(">")){
@@ -146,6 +154,11 @@ public class GUIDialog extends JDialog {
         controller.outputGraph(graph);
         onLoadfile();
     }
+
+    /**
+     * This function is used to add node to the graph
+     * @throws IOException
+     */
     private void addNode() throws IOException {
         Node tmpNode = null;
         Node adjunctNode = null;
@@ -193,35 +206,49 @@ public class GUIDialog extends JDialog {
             textArea1.setText("Sorry, the node is already in the graph!");
         }
     }
+
+    /**
+     * This function does the compute single-step  and prints the results to the GUI
+     * @throws IOException
+     */
     private void onSinglestep() throws IOException {
-        if (singlestep_flag) {
-            graph=new Graph();
-            onLoadfile();
-            singleStr=controller.getSingleStepOutputs(graph,graph.getNode(sourceTextField.getText()));
-            singlestep_flag=false;
-            singleStepStr=singleStr.get(singlestep_count);
+        if (sourceTextField.getText().equals("")) {
+            textArea1.setText("Error! Please enter a source node!");
         }
         else {
-            singleStepStr=singleStepStr+"\n"+singleStr.get(singlestep_count);
-        }
-        textArea1.setText(singleStepStr);
-        singlestep_count=singlestep_count+1;
-        if (singlestep_count==singleStr.size()){
-            singlestep_count=0;
-            singlestep_flag=true;
+            if (singlestep_flag) {
+                graph = new Graph();
+                onLoadfile();
+                singleStr = controller.getSingleStepOutputs(graph, graph.getNode(sourceTextField.getText()));
+                singlestep_flag = false;
+                singleStepStr = singleStr.get(singlestep_count);
+            } else {
+                singleStepStr = singleStepStr + "\n" + singleStr.get(singlestep_count);
+            }
+            textArea1.setText(singleStepStr);
+            singlestep_count = singlestep_count + 1;
+            if (singlestep_count == singleStr.size()) {
+                singlestep_count = 0;
+                singlestep_flag = true;
+            }
         }
     }
     /**
-     * This function do the compute all-function and print the results to the GUI
+     * This function does the compute all-function and prints the results to the GUI
      * @throws IOException
      */
     private void onComputeall() throws IOException {
-        singlestep_flag=true;
-        singlestep_count=0;
-        graph=new Graph();
-        onLoadfile();
-        Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
-        textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()),graph));
+        if (sourceTextField.getText().equals("")) {
+         textArea1.setText("Error! Please enter a source node!");
+        }
+        else {
+            singlestep_flag = true;
+            singlestep_count = 0;
+            graph = new Graph();
+            onLoadfile();
+            Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
+            textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()), graph));
+        }
     }
 
     /**
@@ -313,6 +340,9 @@ public class GUIDialog extends JDialog {
         openedfile.setText(loadfile);
     }
 
+    /**
+     * This function is used to dispose the GUI
+     */
     private void onCancel() {
         // add your code here if necessary
         dispose();
@@ -343,6 +373,10 @@ public class GUIDialog extends JDialog {
         textArea1.setText(message);
     }
 
+    /**
+     * The main function
+     * @param args
+     */
     public static void main(String[] args) {
         GUIDialog dialog = new GUIDialog();
         dialog.pack();
