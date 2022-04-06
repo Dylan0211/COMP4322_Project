@@ -136,9 +136,20 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void removeNode() throws IOException {
-        controller.removeNode(graph.getNode(removeTextField.getText()),graph);
-        controller.outputGraph(graph);
-        onLoadfile();
+        int error_flag=0;
+        for (int i=0;i<graph.getNodesList().size();i++){
+            if (graph.getNodesList().get(i).getName().equals(removeTextField.getText())){
+                error_flag=1;
+            }
+        }
+        if (error_flag==1){
+            controller.removeNode(graph.getNode(removeTextField.getText()),graph);
+            controller.outputGraph(graph);
+            onLoadfile();
+        }
+        else {
+            textArea1.setText("Sorry, the node is not in the graph !");
+        }
     }
 
     /**
@@ -146,13 +157,45 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void breakLink() throws IOException {
-        ArrayList<String> breakNode=new ArrayList<>();
-        for (String node: breakTextfield.getText().split(">")){
-            breakNode.add(node);
+        int error_flag=0;
+        int error_flag2=0;
+        if (breakTextfield.getText().length()==3){
+            if (breakTextfield.getText().charAt(1)!='>') {
+                error_flag=1;
+            }
+            for (int i=0;i<graph.getNodesList().size();i++){
+                if (graph.getNodesList().get(i).getName().equals(String.valueOf(breakTextfield.getText().charAt(0)))){
+                    error_flag2=1;
+                }
+            }
+            if (error_flag2==0){
+                error_flag=1;
+            }
+            error_flag2=0;
+            for (int i=0;i<graph.getNodesList().size();i++){
+                if (graph.getNodesList().get(i).getName().equals(String.valueOf(breakTextfield.getText().charAt(2)))){
+                    error_flag2=1;
+                }
+            }
+            if (error_flag2==0){
+                error_flag=1;
+            }
         }
-        controller.breakLine(graph.getNode(breakNode.get(0)),graph.getNode(breakNode.get(1)));
-        controller.outputGraph(graph);
-        onLoadfile();
+        else {
+            error_flag=1;
+        }
+        if (error_flag==0) {
+            ArrayList<String> breakNode = new ArrayList<>();
+            for (String node : breakTextfield.getText().split(">")) {
+                breakNode.add(node);
+            }
+            controller.breakLine(graph.getNode(breakNode.get(0)), graph.getNode(breakNode.get(1)));
+            controller.outputGraph(graph);
+            onLoadfile();
+        }
+        else {
+            textArea1.setText("Sorry, the command is invalid. Please follow the format!");
+        }
     }
 
     /**
@@ -212,24 +255,35 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void onSinglestep() throws IOException {
+        int error_flag=0;
         if (sourceTextField.getText().equals("")) {
             textArea1.setText("Error! Please enter a source node!");
         }
         else {
-            if (singlestep_flag) {
-                graph = new Graph();
-                onLoadfile();
-                singleStr = controller.getSingleStepOutputs(graph, graph.getNode(sourceTextField.getText()));
-                singlestep_flag = false;
-                singleStepStr = singleStr.get(singlestep_count);
-            } else {
-                singleStepStr = singleStepStr + "\n" + singleStr.get(singlestep_count);
+            for (int i=0;i<graph.getNodesList().size();i++){
+                if (graph.getNodesList().get(i).getName().equals(sourceTextField.getText())){
+                    error_flag=1;
+                }
             }
-            textArea1.setText(singleStepStr);
-            singlestep_count = singlestep_count + 1;
-            if (singlestep_count == singleStr.size()) {
-                singlestep_count = 0;
-                singlestep_flag = true;
+            if (error_flag==1) {
+                if (singlestep_flag) {
+                    graph = new Graph();
+                    onLoadfile();
+                    singleStr = controller.getSingleStepOutputs(graph, graph.getNode(sourceTextField.getText()));
+                    singlestep_flag = false;
+                    singleStepStr = singleStr.get(singlestep_count);
+                } else {
+                    singleStepStr = singleStepStr + "\n" + singleStr.get(singlestep_count);
+                }
+                textArea1.setText(singleStepStr);
+                singlestep_count = singlestep_count + 1;
+                if (singlestep_count == singleStr.size()) {
+                    singlestep_count = 0;
+                    singlestep_flag = true;
+                }
+            }
+            else {
+                textArea1.setText("Sorry! The source node cannot be found in the graph!");
             }
         }
     }
@@ -238,16 +292,27 @@ public class GUIDialog extends JDialog {
      * @throws IOException
      */
     private void onComputeall() throws IOException {
+        int error_flag=0;
         if (sourceTextField.getText().equals("")) {
          textArea1.setText("Error! Please enter a source node!");
         }
         else {
-            singlestep_flag = true;
-            singlestep_count = 0;
-            graph = new Graph();
-            onLoadfile();
-            Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
-            textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()), graph));
+            for (int i=0;i<graph.getNodesList().size();i++){
+                if (graph.getNodesList().get(i).getName().equals(sourceTextField.getText())){
+                    error_flag=1;
+                }
+            }
+            if (error_flag==1) {
+                singlestep_flag = true;
+                singlestep_count = 0;
+                graph = new Graph();
+                onLoadfile();
+                Dijkstra.calculateShortestPath(graph, graph.getNode(sourceTextField.getText()));
+                textArea1.setText(controller.getSummaryTable(graph.getNode(sourceTextField.getText()), graph));
+            }
+            else {
+                textArea1.setText("Sorry! The source node cannot be found in the graph!");
+            }
         }
     }
 
