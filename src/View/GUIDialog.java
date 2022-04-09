@@ -208,6 +208,8 @@ public class GUIDialog extends JDialog {
         int adjunctDistance=0;
         int source_flag=0;
         int duplicate_error=0;
+        int null_error=0;
+        int in_graph=0;
         for (String retval: newNodeTextField.getText().split("[ ]+")) {
             boolean isDistance=false;
             for(String retval2: retval.split(":")){
@@ -223,11 +225,17 @@ public class GUIDialog extends JDialog {
                 else {
                     if (!isDistance){
                         isDistance=true;
+                        in_graph=0;
                         for (int i=0;i<graph.getNodesList().size();i++){
                             if (graph.getNodesList().get(i).getName().equals(retval2)){
                                 adjunctNode=graph.getNodesList().get(i);
+                                in_graph=1;
                                 break;
                             }
+                        }
+                        if (in_graph==0) {
+                            null_error=1;
+                            break;
                         }
                     }
                     else {
@@ -239,13 +247,16 @@ public class GUIDialog extends JDialog {
                 }
             }
         }
-        if (duplicate_error==0){
+        if (duplicate_error==0 && null_error==0){
             controller.addNode(tmpNode,graph);
             controller.outputGraph(graph);
             onLoadfile();
             textArea1.setText("Congratulation! The node is added to the graph !");
         }
-        else{
+        else if (null_error==1){
+            textArea1.setText("The adjacent node is not in the graph!");
+        }
+        else {
             textArea1.setText("Sorry, the node is already in the graph!");
         }
     }
