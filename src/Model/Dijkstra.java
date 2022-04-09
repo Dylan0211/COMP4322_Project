@@ -9,7 +9,7 @@ public class Dijkstra {
      * @param nodes set of nodes to be considered
      * @return current node
      */
-    public static Node getCurrentNode(Set<Node> nodes){
+     private static Node getCurrentNode(Set<Node> nodes){
         Node currentNode = null;
         int currentDistance = Integer.MAX_VALUE; // initialize the distance to MAX_VALUE
         for (Node node: nodes){
